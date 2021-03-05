@@ -12,7 +12,7 @@ let positionX = [];
 let positionY = [];
 let FpositionX = [];
 let FpositionY = [];
-
+ 
    
  
  
@@ -48,7 +48,8 @@ window.onload = function(){
             cell.className = a;
             
            
-            cell.style.cssText = " width:3rem; height:3rem; display:flex align-items:center; justify-content: center; border: solid 0.1rem white; background-color: lightblue; hover:background-color:blue; ";
+            cell.style.cssText = " width:3rem; height:3rem; display:flex align-items:center; justify-content: center; border: solid 0.1rem white; background-color: lightblue; ";
+            
             for(let i = 0;i<13;i++){
                 if(x == FpositionX[i] && y == FpositionY[i]){
             
@@ -57,6 +58,8 @@ window.onload = function(){
             }
             board2.appendChild(cell);
             cell.setAttribute ("onclick","PlaceBoat("+x+","+y+")") ;
+            cell.setAttribute ("onmouseover","BoatIndicator("+x+","+y+")") ;
+            cell.setAttribute ("onmouseout","BoatIndicatorout("+x+","+y+")") ;
         }
     } 
     EPlaceBoat();
@@ -80,13 +83,15 @@ function getRandomInt(max) {
 }
 
 function GetCoordinates(x,y){
-    console.log("unga bunga")
+    
     a= x+y/10;
     let pos = document.getElementsByClassName(a);
-    for(let i = 0;i<13;i++){
+    for(let i = 0;i<14;i++){
         if(x == positionX[i] && y == positionY[i]){
            
           pos[0].style.backgroundColor = "red";   
+          break;
+         
 
     
             
@@ -111,9 +116,7 @@ function GetCoordinates(x,y){
         
     }
 }
-function PlaceBoat(x,y){
-    
-    a= x+y/10;
+function Längd(){
     if(mängdskepp == 0){
         längd = 4;
         
@@ -134,6 +137,11 @@ function PlaceBoat(x,y){
     else if(mängdskepp > 6){
         längd = 0;
     }
+}
+function PlaceBoat(x,y){
+    
+    a= x+y/10;
+    Längd()
     
     for(i=0;i<längd;i++){
          let startpos = document.getElementsByClassName(a+i/r);
@@ -192,4 +200,23 @@ function EPlaceBoat(){
     
 
 }
+function BoatIndicator(x,y){
+    a= x+y/10;
+    Längd()
+    for(i=0;i<längd;i++){
+         let startpos = document.getElementsByClassName(a+i/r);
+         startpos[1].style.backgroundColor = "blue"; 
 
+    }
+
+}
+function BoatIndicatorout(x,y){
+    a= x+y/10;
+    
+    for(i=0;i<längd;i++){
+         let startpos = document.getElementsByClassName(a+i/r);
+         startpos[1].style.backgroundColor = "lightblue"; 
+
+    }
+
+}
