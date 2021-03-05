@@ -1,4 +1,5 @@
-
+let playerHp = 14;
+let EHp = 14;
 let r = 1;
 let längd = 4;
 let Elängd = 4;
@@ -24,9 +25,9 @@ let FpositionY = [];
 
 window.onload = function(){
     let board1 = document.createElement('div');
-    board1.style.cssText = "display:flex; width:33rem;  display:flex; flex-wrap: wrap; border:solid; margin: 2rem;  ";
+    board1.style.cssText = "display:flex; width:33rem;  display:flex; flex-wrap: wrap; border:solid; margin: 2rem; grid-row: 2; grid-column:2 ";
     let board2 = document.createElement('div');
-    board2.style.cssText = "display:flex; width:33rem;  display:flex; flex-wrap: wrap; border:solid; margin: 2rem; ";
+    board2.style.cssText = "display:flex; width:33rem;  display:flex; flex-wrap: wrap; border:solid; margin: 2rem; grid-row: 2; grid-column:1";
     document.body.appendChild(board1);
     document.body.appendChild(board2);
     for(let y = 0;y<10;y++ ){
@@ -62,13 +63,9 @@ window.onload = function(){
             cell.setAttribute ("onmouseout","BoatIndicatorout("+x+","+y+")") ;
         }
     } 
-    EPlaceBoat();
-    EPlaceBoat();
-    EPlaceBoat();
-    EPlaceBoat();
-    EPlaceBoat();
-    EPlaceBoat();
-    EPlaceBoat();
+    while(Emängdskepp < 7){
+        EPlaceBoat()
+    }
     
     
     
@@ -89,7 +86,8 @@ function GetCoordinates(x,y){
     for(let i = 0;i<14;i++){
         if(x == positionX[i] && y == positionY[i]){
            
-          pos[0].style.backgroundColor = "red";   
+          pos[0].style.backgroundColor = "red";
+          EHp --;   
           break;
          
 
@@ -107,9 +105,9 @@ function GetCoordinates(x,y){
     for(let i = 0;i<13;i++){
         
         if(x == FpositionX[i] && y == FpositionY[i]){
-           console.log("fdfjd")
+           
           Epos[1].style.backgroundColor = "red";   
-            
+            playerHp--;
     
             
         }
@@ -143,9 +141,28 @@ function PlaceBoat(x,y){
     a= x+y/10;
     Längd()
     
+    let overlap = false;
     for(i=0;i<längd;i++){
          let startpos = document.getElementsByClassName(a+i/r);
-         startpos[1].style.backgroundColor = "darkblue"; 
+        if(startpos[1].classList.contains("boat")){
+            
+           overlap = true;  
+        } 
+       
+       
+         
+
+    }
+    if(!overlap){
+        for(i=0;i<längd;i++){
+         let startpos = document.getElementsByClassName(a+i/r);
+        if(!startpos[1].classList.contains("boat")){
+             startpos[1].style.backgroundColor = "darkblue"; 
+             
+        } 
+       
+        startpos[1].classList.add("boat")
+         
 
     }
     for(i=0;i<längd;i++){
@@ -157,14 +174,17 @@ function PlaceBoat(x,y){
     mängdskepp++;
     
     
+    }
+    
     
     
 
 }
 function EPlaceBoat(){
+    let Eoverlap = false;
     let Ex= getRandomInt(6)
     let Ey = getRandomInt(6)
-    
+    Ea = Ex+Ey/10
     if(Emängdskepp == 0){
         Elängd = 4;
         
@@ -185,15 +205,27 @@ function EPlaceBoat(){
     else if(Emängdskepp > 6){
         Elängd = 0;
     }
-    
-   
     for(i=0;i<Elängd;i++){
-        console.log("hej")
+        let startpos = document.getElementsByClassName(Ea+i/r);
+        if(startpos[0].classList.contains("Eboat")){
+           Eoverlap = true;
+           console.log("hejddd")  
+        } 
+        
+        
+    }
+    if(!Eoverlap){
+        for(i=0;i<Elängd;i++){
+        let startpos = document.getElementsByClassName(Ea+i/r);
+        startpos[0].classList.add("Eboat")
         positionX[Eb] = Ex+i
         positionY[Eb] = Ey
         Eb++
     }
     Emängdskepp++;
+    }
+    
+    
     
     
     
@@ -203,20 +235,37 @@ function EPlaceBoat(){
 function BoatIndicator(x,y){
     a= x+y/10;
     Längd()
-    for(i=0;i<längd;i++){
-         let startpos = document.getElementsByClassName(a+i/r);
-         startpos[1].style.backgroundColor = "blue"; 
-
-    }
-
-}
-function BoatIndicatorout(x,y){
-    a= x+y/10;
+   
+    
+    
+    
     
     for(i=0;i<längd;i++){
          let startpos = document.getElementsByClassName(a+i/r);
-         startpos[1].style.backgroundColor = "lightblue"; 
+         if(startpos[1].classList.contains("boat")){
+             startpos[1].style.backgroundColor = "purple"; 
+         }else{
+             startpos[1].style.backgroundColor = "blue"; 
+         }
+         
 
     }
+    
+
+}
+function BoatIndicatorout(x,y){
+    
+   a= x+y/10;
+     for(i=0;i<längd;i++){
+         let startpos = document.getElementsByClassName(a+i/r);
+         if(startpos[1].classList.contains("boat")){
+             startpos[1].style.backgroundColor = "darkblue"; 
+         }else{
+             startpos[1].style.backgroundColor = "lightblue"; 
+         }
+         
+
+    }
+    
 
 }

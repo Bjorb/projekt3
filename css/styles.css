@@ -1,0 +1,16 @@
+
+body{
+    height: 100vh;
+    background-size: cover;
+    background-image: url(https://techcrunch.com/wp-content/uploads/2017/05/gettyimages-580833893.jpg);
+    align-items: center;
+    justify-content: center;
+    display: grid;
+    flex-direction: row;
+}
+header{
+    font-family: 'Quantico', sans-serif;
+  font-size: 3rem;
+  grid-column-start: 1 ;
+  grid-column-end: 3 ;
+}
