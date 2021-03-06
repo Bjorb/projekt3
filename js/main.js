@@ -25,9 +25,9 @@ let FpositionY = [];
 
 window.onload = function(){
     let board1 = document.createElement('div');
-    board1.style.cssText = "display:flex; width:32em;  display:flex; flex-wrap: wrap; border:solid; margin: 2rem; grid-row: 2; grid-column:3 ";
+    board1.style.cssText = "display:flex; width:32em;  display:flex; flex-wrap: wrap; border:solid; margin-left: 1rem; margin-top: 0px; grid-row: 3; grid-column:3 ";
     let board2 = document.createElement('div');
-    board2.style.cssText = "display:flex; width:32rem;  display:flex; flex-wrap: wrap; border:solid; margin: 2rem; grid-row: 2; grid-column:2";
+    board2.style.cssText = "display:flex; width:32rem;  display:flex; flex-wrap: wrap; border:solid; margin-right: 1rem; margin-top: 0px;   grid-row: ; grid-column:2";
     document.body.appendChild(board1);
     document.body.appendChild(board2);
     for(let y = 0;y<10;y++ ){
