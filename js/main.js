@@ -25,9 +25,9 @@ let FpositionY = [];
 
 window.onload = function(){
     let board1 = document.createElement('div');
-    board1.style.cssText = "display:flex; width:33rem;  display:flex; flex-wrap: wrap; border:solid; margin: 2rem; grid-row: 2; grid-column:3 ";
+    board1.style.cssText = "display:flex; width:32em;  display:flex; flex-wrap: wrap; border:solid; margin: 2rem; grid-row: 2; grid-column:3 ";
     let board2 = document.createElement('div');
-    board2.style.cssText = "display:flex; width:33rem;  display:flex; flex-wrap: wrap; border:solid; margin: 2rem; grid-row: 2; grid-column:2";
+    board2.style.cssText = "display:flex; width:32rem;  display:flex; flex-wrap: wrap; border:solid; margin: 2rem; grid-row: 2; grid-column:2";
     document.body.appendChild(board1);
     document.body.appendChild(board2);
     for(let y = 0;y<10;y++ ){
@@ -81,7 +81,7 @@ function getRandomInt(max) {
 
 function Shoot(x,y){
     let temp = true;
-    if(EHp == 0 || playerHp == 0){
+    if(EHp == 0 || playerHp == 0||mängdskepp <7){
         temp = false;
     }
     while(temp){
