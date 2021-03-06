@@ -25,9 +25,9 @@ let FpositionY = [];
 
 window.onload = function(){
     let board1 = document.createElement('div');
-    board1.style.cssText = "display:flex; width:33rem;  display:flex; flex-wrap: wrap; border:solid; margin: 2rem; grid-row: 2; grid-column:2 ";
+    board1.style.cssText = "display:flex; width:33rem;  display:flex; flex-wrap: wrap; border:solid; margin: 2rem; grid-row: 2; grid-column:3 ";
     let board2 = document.createElement('div');
-    board2.style.cssText = "display:flex; width:33rem;  display:flex; flex-wrap: wrap; border:solid; margin: 2rem; grid-row: 2; grid-column:1";
+    board2.style.cssText = "display:flex; width:33rem;  display:flex; flex-wrap: wrap; border:solid; margin: 2rem; grid-row: 2; grid-column:2";
     document.body.appendChild(board1);
     document.body.appendChild(board2);
     for(let y = 0;y<10;y++ ){
@@ -39,7 +39,7 @@ window.onload = function(){
             cell.className = a;
             cell.style.cssText = " width:3rem; height:3rem; display:flex align-items:center; justify-content: center; border: solid 0.1rem white; background-color: lightblue; ";
             board1.appendChild(cell);
-            cell.setAttribute ("onclick","GetCoordinates("+x+","+y+")") ;
+            cell.setAttribute ("onclick","Shoot("+x+","+y+")") ;
         }
     }  
     for(let y = 0;y<10;y++ ){
@@ -79,15 +79,25 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
-function GetCoordinates(x,y){
-    
-    a= x+y/10;
+function Shoot(x,y){
+    let temp = true;
+    if(EHp == 0 || playerHp == 0){
+        temp = false;
+    }
+    while(temp){
+        a= x+y/10;
     let pos = document.getElementsByClassName(a);
     for(let i = 0;i<14;i++){
         if(x == positionX[i] && y == positionY[i]){
            
           pos[0].style.backgroundColor = "red";
           EHp --;   
+          if(EHp == 0){
+              let victory = document.getElementsByClassName("victory")
+                victory[0].style.cssText = "display:block;"
+              console.log("You win")
+          }
+          
           break;
          
 
@@ -97,22 +107,39 @@ function GetCoordinates(x,y){
             pos[0].style.backgroundColor = "skyblue";   
         }
     }
-    x = getRandomInt(10)
-    y = getRandomInt(10)
-    a= x+y/10;
-    let Epos = document.getElementsByClassName(a);
+    
+    while(true){
+        x = getRandomInt(10)
+        y = getRandomInt(10)
+        a= x+y/10;
+        Epos = document.getElementsByClassName(a);
+        if(!Epos[1].classList.contains("shot")){
+            
+            break;
+        }
+    }
+    Epos[1].classList.add("shot");     
     Epos[1].style.backgroundColor = "skyblue"; 
-    for(let i = 0;i<13;i++){
+    for(let i = 0;i<14;i++){
         
         if(x == FpositionX[i] && y == FpositionY[i]){
            
-          Epos[1].style.backgroundColor = "red";   
+            Epos[1].style.backgroundColor = "red"
+            
             playerHp--;
-    
+            console.log(playerHp)
+            if(playerHp == 0){
+                let loss = document.getElementsByClassName("loss")
+                loss[0].style.cssText ="  display: block;"
+              console.log("You lose")
+          }
             
         }
         
     }
+    temp = false;
+    }
+    
 }
 function Längd(){
     if(mängdskepp == 0){
@@ -137,13 +164,20 @@ function Längd(){
     }
 }
 function PlaceBoat(x,y){
-    
+    let overlap = false;
     a= x+y/10;
     Längd()
-    
-    let overlap = false;
+    if(x + längd >10 && r == 1 || y + längd >10 && r ==10){
+        overlap = true;
+    }
+   
     for(i=0;i<längd;i++){
-         let startpos = document.getElementsByClassName(a+i/r);
+         if(r == 10){
+           p = (a*10+i)/r
+        }else{
+            p= a+i/r
+        }
+         let startpos = document.getElementsByClassName(p);
         if(startpos[1].classList.contains("boat")){
             
            overlap = true;  
@@ -155,7 +189,12 @@ function PlaceBoat(x,y){
     }
     if(!overlap){
         for(i=0;i<längd;i++){
-         let startpos = document.getElementsByClassName(a+i/r);
+             if(r == 10){
+           p = (a*10+i)/r
+        }else{
+            p= a+i/r
+        }
+         let startpos = document.getElementsByClassName(p);
         if(!startpos[1].classList.contains("boat")){
              startpos[1].style.backgroundColor = "darkblue"; 
              
@@ -166,9 +205,15 @@ function PlaceBoat(x,y){
 
     }
     for(i=0;i<längd;i++){
-        console.log("hej")
-        FpositionX[b] = x+i
-        FpositionY[b] = y
+        
+        if(r == 1){
+            FpositionX[b] = x+i
+            FpositionY[b] = y 
+        }else{
+            FpositionX[b] = x
+            FpositionY[b] = y+i
+        }
+        
         b++
     }
     mängdskepp++;
@@ -181,6 +226,12 @@ function PlaceBoat(x,y){
 
 }
 function EPlaceBoat(){
+    let Er = getRandomInt(100)
+    if(Er < 50){
+        Er = 10;
+    }else{
+        Er = 1;
+    }
     let Eoverlap = false;
     let Ex= getRandomInt(6)
     let Ey = getRandomInt(6)
@@ -205,23 +256,42 @@ function EPlaceBoat(){
     else if(Emängdskepp > 6){
         Elängd = 0;
     }
+
     for(i=0;i<Elängd;i++){
-        let startpos = document.getElementsByClassName(Ea+i/r);
+        if(Er == 10){
+           Ep = (Ea*10+i)/Er
+        }else{
+            Ep= Ea+i/Er
+        }
+        let startpos = document.getElementsByClassName(Ep);
         if(startpos[0].classList.contains("Eboat")){
            Eoverlap = true;
-           console.log("hejddd")  
+           
         } 
         
         
     }
     if(!Eoverlap){
+        
         for(i=0;i<Elängd;i++){
-        let startpos = document.getElementsByClassName(Ea+i/r);
-        startpos[0].classList.add("Eboat")
-        positionX[Eb] = Ex+i
-        positionY[Eb] = Ey
-        Eb++
-    }
+            if(Er == 10){
+                Ep = (Ea*10+i)/Er
+            }else{
+                Ep= Ea+i/Er
+            }
+            let startpos = document.getElementsByClassName(Ep);
+            startpos[0].classList.add("Eboat")
+            if(Er == 1){
+                
+                positionX[Eb] = Ex+i
+                positionY[Eb] = Ey 
+            }else{
+                
+                positionX[Eb] = Ex
+                positionY[Eb] = Ey+i
+            }
+            Eb++
+        }
     Emängdskepp++;
     }
     
@@ -233,16 +303,21 @@ function EPlaceBoat(){
 
 }
 function BoatIndicator(x,y){
-    a= x+y/10;
+    var a= x+y/10;
     Längd()
-   
     
     
     
     
     for(i=0;i<längd;i++){
-         let startpos = document.getElementsByClassName(a+i/r);
-         if(startpos[1].classList.contains("boat")){
+        if(r == 10){
+           p = (a*10+i)/r
+        }else{
+            p= a+i/r
+        }
+        
+         let startpos = document.getElementsByClassName(p);
+         if(startpos[1].classList.contains("boat")||x + längd >10 && r == 1 || y + längd >10 && r ==10){
              startpos[1].style.backgroundColor = "purple"; 
          }else{
              startpos[1].style.backgroundColor = "blue"; 
@@ -254,10 +329,15 @@ function BoatIndicator(x,y){
 
 }
 function BoatIndicatorout(x,y){
-    
+   
    a= x+y/10;
      for(i=0;i<längd;i++){
-         let startpos = document.getElementsByClassName(a+i/r);
+         if(r == 10){
+           p = (a*10+i)/r
+        }else{
+            p= a+i/r
+        }
+         let startpos = document.getElementsByClassName(p);
          if(startpos[1].classList.contains("boat")){
              startpos[1].style.backgroundColor = "darkblue"; 
          }else{
@@ -268,4 +348,11 @@ function BoatIndicatorout(x,y){
     }
     
 
+}
+function Rotate(){
+    if(r == 1){
+        r = 10
+    }else{
+        r = 1
+    }
 }
