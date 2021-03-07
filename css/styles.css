@@ -10,7 +10,7 @@ body {
   flex-direction: row;
 }
 header {
- text-align: center;
+  text-align: center;
   font-family: "Quantico", sans-serif;
   font-size: 3rem;
   grid-column-start: 2;

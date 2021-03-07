@@ -19,8 +19,7 @@ let FpositionY = [];
  
 
  
- console.log(positionX,positionY);
- console.log(FpositionX,FpositionY);
+ 
 
 
 window.onload = function(){
